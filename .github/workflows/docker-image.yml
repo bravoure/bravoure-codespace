@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        docker build . --tag "ghcr.io/bravoure/bravoure-codespace:$GITHUB_SHA" --tag "ghcr.io/bravoure/bravoure-codespace:latest"
+
+    - name: Push to GitHub Packages
+      run: |
+        echo ${{ secrets.PAT }} | docker login ghcr.io -u bravoure-team --password-stdin
+        docker push ghcr.io/bravoure/bravoure-codespace:latest
+        docker push ghcr.io/bravoure/bravoure-codespace:$GITHUB_SHA
