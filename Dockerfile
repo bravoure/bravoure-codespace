@@ -13,3 +13,5 @@ RUN pecl install imagick && \
 # Install php-extensions
 RUN docker-php-ext-configure intl && \
 	docker-php-ext-install mysqli pdo pdo_mysql zip intl bcmath
+
+# rebuild
